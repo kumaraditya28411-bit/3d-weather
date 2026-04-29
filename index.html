@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aero | 3D Weather</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons for modern slick icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 3D Canvas Container -->
+    <div id="canvas-container"></div>
+
+    <!-- Main UI Overlay -->
+    <main class="ui-layer" id="app-container">
+        
+        <!-- Loader -->
+        <div id="loader" class="glass-panel">
+            <div class="spinner"></div>
+            <p>Locating you & analyzing atmosphere...</p>
+        </div>
+
+        <!-- Weather Content (Hidden initially) -->
+        <div id="weather-content" class="hidden">
+            <header class="header">
+                <div class="location-badge glass-panel">
+                    <i class="ph-fill ph-map-pin"></i>
+                    <span id="location-name">Unknown Location</span>
+                </div>
+                <div class="date-badge">
+                    <span id="current-date">Today</span>
+                </div>
+            </header>
+
+            <section class="current-weather">
+                <div class="temp-container">
+                    <h1 id="current-temp">--°</h1>
+                    <div class="weather-condition">
+                        <i id="current-icon" class="ph-fill ph-cloud-sun"></i>
+                        <span id="current-desc">Loading...</span>
+                    </div>
+                </div>
+                
+                <div class="metrics glass-panel">
+                    <div class="metric">
+                        <i class="ph ph-wind"></i>
+                        <div>
+                            <span class="label">Wind</span>
+                            <span class="value" id="current-wind">-- km/h</span>
+                        </div>
+                    </div>
+                    <div class="metric">
+                        <i class="ph ph-thermometer"></i>
+                        <div>
+                            <span class="label">High / Low</span>
+                            <span class="value" id="current-hl">--° / --°</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="forecast-section">
+                <h3>7-Day Forecast</h3>
+                <div class="forecast-container" id="forecast-container">
+                    <!-- Forecast items injected via JS -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Three.js and GSAP from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- App Logic -->
+    <script src="main.js"></script>
+</body>
+</html>
