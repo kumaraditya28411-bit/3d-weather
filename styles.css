@@ -1,0 +1,294 @@
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: #050505;
+    color: #ffffff;
+    overflow: hidden; /* Prevent scrolling, 3D background is fixed */
+    height: 100vh;
+    width: 100vw;
+}
+
+/* 3D Canvas Container */
+#canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1; /* Behind UI */
+}
+
+/* Main UI Layer */
+.ui-layer {
+    position: relative;
+    z-index: 10;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    pointer-events: none; /* Let clicks pass through to 3D scene except for UI elements */
+}
+
+/* Make actual UI elements clickable */
+.glass-panel, .forecast-item, .header {
+    pointer-events: auto;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Loader */
+#loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+    transition: opacity 0.5s ease;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: #00ffcc; /* Neon cyan */
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#weather-content {
+    transition: opacity 1s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: auto; /* Pushes content down */
+}
+
+.location-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #00ffcc;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.date-badge {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Current Weather Section */
+.current-weather {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+}
+
+.temp-container h1 {
+    font-size: 8rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));
+}
+
+.weather-condition {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 2rem;
+    font-weight: 400;
+    color: #bf00ff; /* Neon Purple */
+}
+
+.weather-condition i {
+    font-size: 2.5rem;
+}
+
+.metrics {
+    display: flex;
+    gap: 2rem;
+    padding: 1.5rem 2.5rem;
+}
+
+.metric {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.metric i {
+    font-size: 2rem;
+    color: #00ffcc;
+}
+
+.metric div {
+    display: flex;
+    flex-direction: column;
+}
+
+.metric .label {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.metric .value {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* Forecast Section */
+.forecast-section {
+    width: 100%;
+}
+
+.forecast-section h3 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.forecast-container {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    /* Hide scrollbar */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.forecast-container::-webkit-scrollbar {
+    display: none;
+}
+
+.forecast-item {
+    flex: 0 0 calc(100% / 7 - 1rem); /* 7 items roughly */
+    min-width: 120px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s ease;
+    cursor: pointer;
+}
+
+.forecast-item:hover {
+    transform: translateY(-10px) scale(1.05);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(0, 255, 204, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 255, 204, 0.1);
+}
+
+.forecast-item .day {
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.forecast-item i {
+    font-size: 2.5rem;
+    color: #ffffff;
+}
+
+.forecast-item .temps {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.forecast-item .high {
+    font-weight: 600;
+}
+
+.forecast-item .low {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .current-weather {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2rem;
+    }
+    .temp-container h1 {
+        font-size: 6rem;
+    }
+    .metrics {
+        width: 100%;
+        justify-content: space-around;
+    }
+}
+
+@media (max-width: 600px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .temp-container h1 {
+        font-size: 4.5rem;
+    }
+    .forecast-item {
+        min-width: 100px;
+        padding: 1rem;
+    }
+}
